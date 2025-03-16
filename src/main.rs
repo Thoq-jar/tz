@@ -2,6 +2,7 @@ mod core;
 
 use std::path::PathBuf;
 use std::{env, fs, io, path::Path, process};
+use num_cpus;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -13,9 +14,10 @@ fn main() {
 
     let command = args[1].as_str();
     let path = args[2].as_str();
+    let threads = num_cpus::get() / 2;
 
     rayon::ThreadPoolBuilder::new()
-        .num_threads(0)
+        .num_threads(threads)
         .build_global()
         .unwrap();
     println!(
